@@ -1,0 +1,130 @@
+.skills {
+  background: var(--color-bg-2);
+}
+
+.skills__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+.skills__panel {
+  padding: 36px;
+}
+
+.skills__panel-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.skills__panel-icon {
+  font-size: 28px;
+}
+
+.skills__panel-title {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* Skill bars */
+.skills__bars {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.skill-item__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.skill-item__name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.skill-item__level {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.skill-item__track {
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.skill-item__bar {
+  height: 100%;
+  width: 0;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.skill-item__bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 60px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2));
+}
+
+/* Tools */
+.skills__tools-title {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.skills__tools-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.skills__tool {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 50px;
+  cursor: default;
+}
+
+.skills__tool-icon {
+  font-size: 20px;
+}
+
+.skills__tool-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  transition: color var(--transition);
+}
+
+.skills__tool:hover .skills__tool-name {
+  color: var(--color-text);
+}
+
+@media (max-width: 768px) {
+  .skills__grid { grid-template-columns: 1fr; }
+  .skills__panel { padding: 24px; }
+}
