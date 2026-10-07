@@ -32,5 +32,6 @@ There is no test suite and no linter. GitHub Pages serves the `gh-pages` branch,
 ## Assets and legacy files
 
 - Images and the resume PDF (`Jasmeen-Jawa-Resume.pdf`, path set in `src/site.ts`) live in `public/assets/` and are referenced by absolute path (`/assets/...`) in components. The hashed-looking filenames are just the real file names; keep them in sync if you rename anything.
+- `public/assets/og-image.png` is the 1200×630 link-preview image (referenced by the `og:image` tags in `index.html`). It repeats the hero headline and stats, so regenerate it from `scripts/og-image.html` when those change: screenshot the page at 1200×630 with headless Chrome after its Google Fonts load.
 - The root-level `assets/` directory and `vite.svg` are committed output from an earlier build/deploy, before the move to `gh-pages`. The current source doesn't use them. `dist/` is gitignored.
 - Visual check without a test suite: run `npm run build && npx vite preview`, then screenshot with headless Chrome (`/Applications/Google Chrome.app`). Emulate mobile at 390px with real device emulation, because a plain `--window-size` gives misleading layouts.
