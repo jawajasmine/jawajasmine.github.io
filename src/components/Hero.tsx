@@ -1,20 +1,20 @@
 import { useState, useEffect, useRef } from 'react'
+import { RESUME_URL } from '../site'
 import './Hero.scss'
 
 const ROLES = [
-  'UX Designer',
-  'Product Manager',
-  'Design Strategist',
-  'Project Lead',
-  'Experience Architect',
+  'UX Design Leader',
+  'Product Designer',
+  'Design Systems Builder',
+  'User Researcher',
+  'Designer Who Builds',
 ]
 
 export default function Hero() {
   const [roleIndex, setRoleIndex] = useState(0)
   const [displayed, setDisplayed] = useState('')
   const [deleting, setDeleting] = useState(false)
-  const [cursorVisible, setCursorVisible] = useState(true)
-  const timeoutRef = useRef(null)
+    const timeoutRef = useRef<ReturnType<typeof setTimeout>>()
 
   // Typewriter effect
   useEffect(() => {
@@ -38,22 +38,16 @@ export default function Hero() {
     return () => clearTimeout(timeoutRef.current)
   }, [displayed, deleting, roleIndex])
 
-  // Cursor blink
-  useEffect(() => {
-    const interval = setInterval(() => setCursorVisible(v => !v), 530)
-    return () => clearInterval(interval)
-  }, [])
-
-  const scrollToSection = (id) => {
+  const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
     <section id="home" className="hero">
       {/* Background orbs */}
-      <div className="hero__orb hero__orb--1" />
-      <div className="hero__orb hero__orb--2" />
-      <div className="hero__orb hero__orb--3" />
+      <div className="hero__orb hero__orb--1" aria-hidden="true" />
+      <div className="hero__orb hero__orb--2" aria-hidden="true" />
+      <div className="hero__orb hero__orb--3" aria-hidden="true" />
 
       {/* Background grid */}
       <div className="hero__grid" aria-hidden="true" />
@@ -72,34 +66,35 @@ export default function Hero() {
         </h1>
 
         {/* Role ticker */}
-        <div className="hero__role">
-          <span className="hero__role-text">{displayed}</span>
-          <span className={`hero__cursor ${cursorVisible ? 'visible' : ''}`}>|</span>
-        </div>
+        <p className="hero__role">
+          <span className="sr-only">{ROLES.join(', ')}</span>
+          <span className="hero__role-text" aria-hidden="true">{displayed}</span>
+          <span className="hero__cursor" aria-hidden="true">|</span>
+        </p>
 
         {/* Tag line */}
         <p className="hero__tagline">
-          15+ years shaping human-centered digital experiences.&nbsp;
+          17+ years designing and shipping enterprise, data-heavy and healthcare products.&nbsp;
           <br className="hero__br" />
-          Now leading product strategy at&nbsp;
+          Currently leading UX as Team Lead at&nbsp;
           <span className="hero__company">Wipro</span>.
         </p>
 
         {/* Stats */}
         <div className="hero__stats">
           <div className="hero__stat">
-            <span className="hero__stat-num">15<span className="hero__stat-plus">+</span></span>
+            <span className="hero__stat-num">17<span className="hero__stat-plus">+</span></span>
             <span className="hero__stat-label">Years Experience</span>
           </div>
-          <div className="hero__stat-divider" />
+          <div className="hero__stat-divider" aria-hidden="true" />
           <div className="hero__stat">
-            <span className="hero__stat-num">50<span className="hero__stat-plus">+</span></span>
-            <span className="hero__stat-label">Projects Delivered</span>
+            <span className="hero__stat-num">50<span className="hero__stat-plus">%</span></span>
+            <span className="hero__stat-label">MES Adoption Lift</span>
           </div>
-          <div className="hero__stat-divider" />
+          <div className="hero__stat-divider" aria-hidden="true" />
           <div className="hero__stat">
-            <span className="hero__stat-num">3</span>
-            <span className="hero__stat-label">Domains Mastered</span>
+            <span className="hero__stat-num">2</span>
+            <span className="hero__stat-label">Design Systems Built</span>
           </div>
         </div>
 
@@ -113,7 +108,7 @@ export default function Hero() {
             View Portfolio
           </button>
           <a
-            href="/assets/Jasmeen-Resume-CeZcJ6EY.pdf"
+            href={RESUME_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-outline"
@@ -124,16 +119,16 @@ export default function Hero() {
         </div>
 
         {/* Scroll hint */}
-        <div className="hero__scroll" onClick={() => scrollToSection('about')}>
+        <button type="button" className="hero__scroll" onClick={() => scrollToSection('about')}>
           <div className="hero__scroll-line" />
           <span>Scroll</span>
-        </div>
+        </button>
       </div>
 
       {/* Floating decoration */}
-      <div className="hero__floating-card">
+      <div className="hero__floating-card" aria-hidden="true">
         <span className="hero__floating-icon">✦</span>
-        <span>Design&nbsp;<span style={{color:'var(--color-primary)'}}>×</span>&nbsp;Strategy</span>
+        <span>Design&nbsp;<span style={{color:'var(--color-primary)'}}>×</span>&nbsp;Code</span>
       </div>
     </section>
   )

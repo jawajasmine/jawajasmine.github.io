@@ -109,25 +109,11 @@
   white-space: nowrap;
 }
 
-.exp__badge {
-  padding: 4px 12px;
-  border-radius: 50px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.exp__badge--full {
-  background: rgba(34, 197, 94, 0.1);
-  color: #22c55e;
-  border: 1px solid rgba(34, 197, 94, 0.2);
-}
-
-.exp__badge--freelance {
-  background: rgba(251, 191, 36, 0.1);
-  color: var(--color-gold);
-  border: 1px solid rgba(251, 191, 36, 0.2);
+.exp__summary {
+  font-size: 15px;
+  color: var(--color-text);
+  line-height: 1.6;
+  margin-bottom: 16px;
 }
 
 /* Highlights */
@@ -156,7 +142,58 @@
   margin-top: 7px;
 }
 
+/* Client engagements (nested projects) */
+.exp__projects {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.exp__projects-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.exp__project {
+  padding-left: 16px;
+  border-left: 2px solid var(--color-border);
+}
+
+.exp__project-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 6px;
+}
+
+.exp__project-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.exp__project-period {
+  font-size: 12px;
+  color: var(--color-text-subtle);
+  white-space: nowrap;
+}
+
+.exp__project-about {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--color-text-subtle);
+  margin-bottom: 10px;
+}
+
 @media (max-width: 640px) {
+  .exp__project-top { flex-direction: column; gap: 2px; }
   .exp__card { padding: 20px; }
   .exp__card-top { flex-direction: column; }
   .exp__right { align-items: flex-start; }

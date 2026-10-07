@@ -1,104 +1,40 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
+import { useReveal } from '../hooks/useReveal'
 import './Skills.scss'
 
-interface Skill {
-  name: string
-  level: number
-}
-
-interface SkillBarProps {
-  skill: Skill
-  index: number
-}
-
-const UX_SKILLS: Skill[] = [
-  { name: 'Figma', level: 95 },
-  { name: 'Adobe XD', level: 90 },
-  { name: 'User Research', level: 92 },
-  { name: 'Design Systems', level: 88 },
-  { name: 'Prototyping', level: 90 },
-  { name: 'Usability Testing', level: 87 },
-  { name: 'Information Architecture', level: 85 },
-  { name: 'Interaction Design', level: 90 },
-]
-
-const PM_SKILLS: Skill[] = [
-  { name: 'Product Strategy', level: 88 },
-  { name: 'Agile / SAFe', level: 85 },
-  { name: 'Jira / Confluence', level: 90 },
-  { name: 'Roadmapping', level: 87 },
-  { name: 'Stakeholder Management', level: 92 },
-  { name: 'Data Analytics', level: 78 },
-  { name: 'OKR Framework', level: 82 },
-  { name: 'Go-to-Market', level: 80 },
+// "Core Expertise" from the 2026 resume
+const EXPERTISE = [
+  {
+    icon: '🧭',
+    title: 'UX Leadership',
+    items: ['UX strategy', 'Design vision for multi-product engagements', 'Design systems & guidelines', 'Standardized design workflows', 'Design-thinking facilitation', 'Mentoring designers', 'Stakeholder & client alignment'],
+  },
+  {
+    icon: '🎨',
+    title: 'Design Craft',
+    items: ['Information architecture', 'Interaction design', 'User flows', 'Wireframes', 'High-fidelity & interactive prototypes', 'Visual design', 'Responsive design', 'Data-heavy & enterprise UX', 'Design QA'],
+  },
+  {
+    icon: '🔍',
+    title: 'Research & Validation',
+    items: ['User research', 'Usability testing', 'Heatmap analysis', 'A/B testing', 'Current-state workflow analysis', 'Design validation with stakeholders'],
+  },
+  {
+    icon: '🤝',
+    title: 'Product Partnership',
+    items: ['Requirement discovery', 'User stories', 'Feature definition', 'Engineering feasibility', 'Agile / Scrum', 'Jira'],
+  },
 ]
 
 const TOOLS = [
-  { name: 'Figma', icon: '🎨' },
-  { name: 'Adobe XD', icon: '✏️' },
-  { name: 'Miro', icon: '🗺️' },
-  { name: 'Jira', icon: '📋' },
-  { name: 'Confluence', icon: '📝' },
-  { name: 'Notion', icon: '📓' },
-  { name: 'Slack', icon: '💬' },
-  { name: 'Hotjar', icon: '🔥' },
-  { name: 'Mixpanel', icon: '📊' },
-  { name: 'Zeplin', icon: '🔷' },
-  { name: 'InVision', icon: '🎯' },
-  { name: 'Mural', icon: '🖼️' },
+  { group: 'Design', items: ['Figma', 'Adobe XD', 'Sketch', 'InVision', 'Photoshop', 'Illustrator'] },
+  { group: 'Engineering', items: ['React', 'Vue.js', 'JavaScript', 'jQuery', 'HTML', 'CSS', 'Java', 'Spring Boot', 'REST APIs', 'SQL'] },
 ]
-
-function SkillBar({ skill, index }: SkillBarProps) {
-  const barRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setTimeout(() => {
-              if (barRef.current) {
-                barRef.current.style.width = `${skill.level}%`
-              }
-            }, index * 80)
-          }
-        })
-      },
-      { threshold: 0.1 }
-    )
-    if (barRef.current?.parentElement) observer.observe(barRef.current.parentElement)
-    return () => observer.disconnect()
-  }, [skill.level, index])
-
-  return (
-    <div className="skill-item">
-      <div className="skill-item__header">
-        <span className="skill-item__name">{skill.name}</span>
-        <span className="skill-item__level">{skill.level}%</span>
-      </div>
-      <div className="skill-item__track">
-        <div className="skill-item__bar" ref={barRef} />
-      </div>
-    </div>
-  )
-}
 
 export default function Skills() {
   const sectionRef = useRef<HTMLElement>(null)
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) entry.target.classList.add('is-visible')
-        })
-      },
-      { threshold: 0.1 }
-    )
-    const elements = sectionRef.current?.querySelectorAll('.reveal')
-    elements?.forEach((el: Element) => observer.observe(el))
-    return () => observer.disconnect()
-  }, [])
+  useReveal(sectionRef)
 
   return (
     <section id="skills" className="section skills" ref={sectionRef}>
@@ -109,44 +45,35 @@ export default function Skills() {
         </div>
 
         <div className="skills__grid">
-          {/* UX Skills */}
-          <div className="glass-card skills__panel reveal">
-            <div className="skills__panel-header">
-              <span className="skills__panel-icon">🎨</span>
-              <h3 className="skills__panel-title">UX & Design</h3>
+          {EXPERTISE.map(group => (
+            <div key={group.title} className="glass-card skills__panel reveal">
+              <div className="skills__panel-header">
+                <span className="skills__panel-icon" aria-hidden="true">{group.icon}</span>
+                <h3 className="skills__panel-title">{group.title}</h3>
+              </div>
+              <ul className="skills__chips">
+                {group.items.map(item => (
+                  <li key={item} className="skills__chip">{item}</li>
+                ))}
+              </ul>
             </div>
-            <div className="skills__bars">
-              {UX_SKILLS.map((skill, i) => (
-                <SkillBar key={skill.name} skill={skill} index={i} />
-              ))}
-            </div>
-          </div>
-
-          {/* PM Skills */}
-          <div className="glass-card skills__panel reveal">
-            <div className="skills__panel-header">
-              <span className="skills__panel-icon">🚀</span>
-              <h3 className="skills__panel-title">Product Management</h3>
-            </div>
-            <div className="skills__bars">
-              {PM_SKILLS.map((skill, i) => (
-                <SkillBar key={skill.name} skill={skill} index={i} />
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
 
         {/* Tools */}
         <div className="skills__tools reveal">
           <h3 className="skills__tools-title">Tools I Work With</h3>
-          <div className="skills__tools-grid">
-            {TOOLS.map(tool => (
-              <div key={tool.name} className="skills__tool glass-card">
-                <span className="skills__tool-icon">{tool.icon}</span>
-                <span className="skills__tool-name">{tool.name}</span>
+          <p className="skills__tools-sub">A designer who builds: comfortable in Figma and in the codebase.</p>
+          {TOOLS.map(t => (
+            <div key={t.group} className="skills__tools-row">
+              <span className="skills__tools-group">{t.group}</span>
+              <div className="skills__tools-grid">
+                {t.items.map(name => (
+                  <span key={name} className="skills__tool glass-card">{name}</span>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

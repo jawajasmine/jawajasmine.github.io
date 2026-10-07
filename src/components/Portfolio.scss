@@ -61,15 +61,21 @@
 /* Image */
 .portfolio__img-wrap {
   position: relative;
+  display: block;
+  width: 100%;
   aspect-ratio: 16/10;
   overflow: hidden;
   cursor: pointer;
+  padding: 0;
+  border: 0;
+  background: none;
 }
 
 .portfolio__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top;
   transition: transform 0.5s ease;
 }
 
@@ -89,7 +95,8 @@
   backdrop-filter: blur(2px);
 }
 
-.portfolio__img-wrap:hover .portfolio__img-overlay {
+.portfolio__img-wrap:hover .portfolio__img-overlay,
+.portfolio__img-wrap:focus-visible .portfolio__img-overlay {
   opacity: 1;
 }
 

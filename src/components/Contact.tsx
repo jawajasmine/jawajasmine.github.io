@@ -1,28 +1,22 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
+import { useReveal } from '../hooks/useReveal'
+import { EMAIL, LINKEDIN_URL, RESUME_URL } from '../site'
 import './Contact.scss'
 
 export default function Contact() {
-  const sectionRef = useRef(null)
+  const sectionRef = useRef<HTMLElement>(null)
   const [copied, setCopied] = useState(false)
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) entry.target.classList.add('is-visible')
-        })
-      },
-      { threshold: 0.1 }
-    )
-    const elements = sectionRef.current?.querySelectorAll('.reveal')
-    elements?.forEach(el => observer.observe(el))
-    return () => observer.disconnect()
-  }, [])
+  useReveal(sectionRef)
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText('jasmeen.jawa@gmail.com')
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2500)
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2500)
+    } catch {
+      window.location.href = `mailto:${EMAIL}`
+    }
   }
 
   return (
@@ -44,9 +38,9 @@ export default function Contact() {
           <div className="glass-card contact__card reveal">
             <div className="contact__card-icon">📧</div>
             <h4 className="contact__card-label">Email</h4>
-            <p className="contact__card-value">jasmeen.jawa@gmail.com</p>
+            <a className="contact__card-value" href={`mailto:${EMAIL}`}>{EMAIL}</a>
             <button className="btn btn-outline contact__card-btn" onClick={handleCopyEmail}>
-              {copied ? '✓ Copied!' : 'Copy Email'}
+              <span aria-live="polite">{copied ? '✓ Copied!' : 'Copy Email'}</span>
             </button>
           </div>
 
@@ -56,7 +50,7 @@ export default function Contact() {
             <h4 className="contact__card-label">LinkedIn</h4>
             <p className="contact__card-value">Connect with me</p>
             <a
-              href="https://linkedin.com/in/jasmeenjawa"
+              href={LINKEDIN_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-primary contact__card-btn"
@@ -71,7 +65,7 @@ export default function Contact() {
             <h4 className="contact__card-label">Resume</h4>
             <p className="contact__card-value">Download my CV</p>
             <a
-              href="/assets/Jasmeen-Resume-CeZcJ6EY.pdf"
+              href={RESUME_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-outline contact__card-btn"
@@ -85,8 +79,8 @@ export default function Contact() {
         <div className="contact__availability reveal">
           <span className="contact__avail-dot" />
           <p>
-            <strong>Open to new opportunities</strong> — Product Management, UX Leadership,
-            and Design Strategy roles globally.
+            <strong>Open to new opportunities</strong>: UX leadership, product design and
+            design systems roles. Based in Bengaluru, India.
           </p>
         </div>
       </div>

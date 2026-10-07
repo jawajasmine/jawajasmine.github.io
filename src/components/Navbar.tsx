@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { EMAIL } from '../site'
 import './Navbar.scss'
 
 interface NavbarProps {
@@ -23,17 +24,22 @@ export default function Navbar({ activeSection, scrolled }: NavbarProps) {
     setMenuOpen(false)
   }
 
-  // Close menu on resize
+  // Close menu on resize / ESC
   useEffect(() => {
     const handleResize = () => { if (window.innerWidth > 768) setMenuOpen(false) }
+    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenuOpen(false) }
     window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
+    window.addEventListener('keydown', handleKey)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      window.removeEventListener('keydown', handleKey)
+    }
   }, [])
 
   return (
-    <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
+    <header className={`navbar ${scrolled || menuOpen ? 'navbar--scrolled' : ''}`}>
       <div className="navbar__inner container">
-        <button className="navbar__logo" onClick={() => scrollTo('home')}>
+        <button className="navbar__logo" onClick={() => scrollTo('home')} aria-label="Jasmeen Jawa — back to top">
           JJ<span className="navbar__logo-dot">.</span>
         </button>
 
@@ -43,6 +49,7 @@ export default function Navbar({ activeSection, scrolled }: NavbarProps) {
             <button
               key={link.id}
               className={`navbar__link ${activeSection === link.id ? 'is-active' : ''}`}
+              aria-current={activeSection === link.id ? 'true' : undefined}
               onClick={() => scrollTo(link.id)}
             >
               {link.label}
@@ -52,7 +59,7 @@ export default function Navbar({ activeSection, scrolled }: NavbarProps) {
 
         {/* Hire me CTA */}
         <a
-          href="mailto:jasmeen@example.com"
+          href={`mailto:${EMAIL}`}
           className="btn btn-primary navbar__cta"
         >
           Hire Me
@@ -63,13 +70,19 @@ export default function Navbar({ activeSection, scrolled }: NavbarProps) {
           className={`navbar__hamburger ${menuOpen ? 'is-open' : ''}`}
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
+          aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
         >
           <span /><span /><span />
         </button>
       </div>
 
       {/* Mobile menu */}
-      <div className={`navbar__mobile ${menuOpen ? 'is-open' : ''}`}>
+      <nav
+        id="mobile-menu"
+        className={`navbar__mobile ${menuOpen ? 'is-open' : ''}`}
+        aria-label="Mobile navigation"
+      >
         {NAV_LINKS.map(link => (
           <button
             key={link.id}
@@ -79,7 +92,8 @@ export default function Navbar({ activeSection, scrolled }: NavbarProps) {
             {link.label}
           </button>
         ))}
-      </div>
+        <a href={`mailto:${EMAIL}`} className="btn btn-primary navbar__mobile-cta">Hire Me</a>
+      </nav>
     </header>
   )
 }

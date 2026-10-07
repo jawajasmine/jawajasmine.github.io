@@ -63,7 +63,11 @@
 .contact__card-value {
   font-size: 15px;
   color: var(--color-text-muted);
+  text-decoration: none;
+  overflow-wrap: anywhere;
 }
+
+a.contact__card-value:hover { color: var(--color-primary); }
 
 .contact__card-btn {
   margin-top: 4px;

@@ -17,15 +17,14 @@ export default function App() {
       setScrolled(window.scrollY > 50)
 
       const sections = ['home', 'about', 'skills', 'portfolio', 'experience', 'contact']
-      const offsets = sections.map(id => {
+      const active = [...sections].reverse().find(id => {
         const el = document.getElementById(id)
-        return el ? { id, top: el.getBoundingClientRect().top } : null
-      }).filter(Boolean)
-
-      const active = offsets.reverse().find(s => s.top <= 120)
-      if (active) setActiveSection(active.id)
+        return el && el.getBoundingClientRect().top <= 120
+      })
+      if (active) setActiveSection(active)
     }
 
+    handleScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])

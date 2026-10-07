@@ -1,94 +1,102 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, type CSSProperties } from 'react'
+import { useReveal } from '../hooks/useReveal'
 import './Portfolio.scss'
 
-const PROJECTS = [
+interface Project {
+  id: number
+  title: string
+  category: string
+  desc: string
+  image: string
+  tags: string[]
+  color: string
+}
+
+// Descriptions match what each screenshot shows — don't add metrics that aren't on the resume.
+const PROJECTS: Project[] = [
   {
     id: 1,
-    title: 'Enterprise UX Redesign',
-    category: 'UX Design',
-    desc: 'End-to-end redesign of a complex enterprise dashboard, reducing task completion time by 40%.',
+    title: 'Design System',
+    category: 'Design System',
+    desc: 'A UI design system: reusable component library, design tokens, typography, colour schemes and interaction patterns, documented to keep products consistent.',
     image: '/assets/port1-B7SeF-KR.png',
-    tags: ['Figma', 'Design System', 'Enterprise'],
+    tags: ['Figma', 'Components', 'Tokens'],
     color: '#7c3aed',
   },
   {
     id: 2,
-    title: 'Mobile Banking App',
-    category: 'Product Design',
-    desc: 'Intuitive mobile banking experience with accessibility-first design and 4.8★ App Store rating.',
+    title: 'Style Guide & Colour System',
+    category: 'Design System',
+    desc: 'Brand style guide covering the colour palette, type scale, paragraph pairings and input states for a consistent product UI.',
     image: '/assets/port2-BlB0tpzw.jpg',
-    tags: ['Mobile', 'FinTech', 'Accessibility'],
-    color: '#0ea5e9',
+    tags: ['Style Guide', 'Typography', 'Colour'],
+    color: '#a78bfa',
   },
   {
     id: 3,
-    title: 'E-Commerce Platform',
-    category: 'UX Strategy',
-    desc: 'Complete UX overhaul of an e-commerce platform resulting in 28% conversion rate uplift.',
+    title: 'Garttmeyer Automotive',
+    category: 'Web Design',
+    desc: 'Website for a European auto repair specialist: service highlights, online booking and a clear call-to-action layout.',
     image: '/assets/port3-bGZJJ3Ll.jpg',
-    tags: ['E-Commerce', 'Conversion', 'Research'],
-    color: '#f472b6',
+    tags: ['Small Business', 'Booking', 'Responsive'],
+    color: '#0ea5e9',
   },
   {
     id: 4,
-    title: 'SaaS Product Launch',
-    category: 'Product Management',
-    desc: 'Led cross-functional team to ship a B2B SaaS product from inception to market in 6 months.',
+    title: "F&O's Pizza",
+    category: 'Web Design',
+    desc: 'Restaurant website with online ordering, takeout and delivery entry points, gift cards and an events grid.',
     image: '/assets/port4-CQxp3J14.jpg',
-    tags: ['SaaS', 'B2B', 'Launch'],
-    color: '#fbbf24',
+    tags: ['Restaurant', 'Ordering', 'Visual Design'],
+    color: '#f87171',
   },
   {
     id: 5,
-    title: 'Healthcare Dashboard',
-    category: 'UX Design',
-    desc: 'Patient-centric healthcare management platform with real-time data visualization.',
+    title: 'The Analyst Agency',
+    category: 'Web Design',
+    desc: 'Marketing site for a market research and business analysis consultancy, built around data-driven visuals.',
     image: '/assets/port5-DQZSMrLB.jpg',
-    tags: ['HealthTech', 'Dashboard', 'Data Viz'],
-    color: '#34d399',
+    tags: ['Consulting', 'B2B', 'Landing Page'],
+    color: '#fbbf24',
   },
   {
     id: 6,
-    title: 'Design System at Scale',
-    category: 'Design System',
-    desc: 'Built a unified design system adopted by 12 product teams across the organization.',
+    title: 'Michelle Esthetics Medspa',
+    category: 'Web Design',
+    desc: 'Medspa website with service booking, pricing, memberships and multi-location navigation.',
     image: '/assets/port6-CyvNn-cF.jpg',
-    tags: ['Design System', 'Figma', 'Governance'],
-    color: '#a78bfa',
+    tags: ['Healthcare', 'Booking', 'Branding'],
+    color: '#f472b6',
   },
 ]
 
-const FILTER_CATS = ['All', 'UX Design', 'Product Design', 'Product Management', 'UX Strategy', 'Design System']
+const FILTER_CATS = ['All', ...new Set(PROJECTS.map(p => p.category))]
 
 export default function Portfolio() {
   const [activeFilter, setActiveFilter] = useState('All')
-  const [lightboxImg, setLightboxImg] = useState(null)
-  const sectionRef = useRef(null)
+  const [lightbox, setLightbox] = useState<Project | null>(null)
+  const sectionRef = useRef<HTMLElement>(null)
+  const closeRef = useRef<HTMLButtonElement>(null)
 
   const filtered = activeFilter === 'All'
     ? PROJECTS
     : PROJECTS.filter(p => p.category === activeFilter)
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) entry.target.classList.add('is-visible')
-        })
-      },
-      { threshold: 0.1 }
-    )
-    const elements = sectionRef.current?.querySelectorAll('.reveal')
-    elements?.forEach(el => observer.observe(el))
-    return () => observer.disconnect()
-  }, [])
+  // Re-run on filter change: cards remounted by the filter need observing again.
+  useReveal(sectionRef, [activeFilter])
 
-  // Close lightbox on ESC
+  // Lightbox: close on ESC, lock page scroll, move focus into the dialog
   useEffect(() => {
-    const handler = (e) => { if (e.key === 'Escape') setLightboxImg(null) }
+    if (!lightbox) return
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') setLightbox(null) }
     window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [])
+    document.body.style.overflow = 'hidden'
+    closeRef.current?.focus()
+    return () => {
+      window.removeEventListener('keydown', handler)
+      document.body.style.overflow = ''
+    }
+  }, [lightbox])
 
   return (
     <section id="portfolio" className="section portfolio" ref={sectionRef}>
@@ -104,6 +112,7 @@ export default function Portfolio() {
             <button
               key={cat}
               className={`portfolio__filter ${activeFilter === cat ? 'is-active' : ''}`}
+              aria-pressed={activeFilter === cat}
               onClick={() => setActiveFilter(cat)}
             >
               {cat}
@@ -113,26 +122,28 @@ export default function Portfolio() {
 
         {/* Grid */}
         <div className="portfolio__grid">
-          {filtered.map((project, i) => (
+          {filtered.map(project => (
             <article
               key={project.id}
               className="portfolio__card glass-card reveal"
-              style={{ '--accent': project.color, animationDelay: `${i * 0.1}s` }}
+              style={{ '--accent': project.color } as CSSProperties}
             >
-              <div
+              <button
+                type="button"
                 className="portfolio__img-wrap"
-                onClick={() => setLightboxImg(project)}
+                onClick={() => setLightbox(project)}
+                aria-label={`View larger image of ${project.title}`}
               >
                 <img
                   src={project.image}
-                  alt={project.title}
+                  alt=""
                   className="portfolio__img"
                   loading="lazy"
                 />
-                <div className="portfolio__img-overlay">
+                <div className="portfolio__img-overlay" aria-hidden="true">
                   <span className="portfolio__zoom-icon">⊕</span>
                 </div>
-              </div>
+              </button>
 
               <div className="portfolio__body">
                 <span className="portfolio__category">{project.category}</span>
@@ -150,15 +161,21 @@ export default function Portfolio() {
       </div>
 
       {/* Lightbox */}
-      {lightboxImg && (
-        <div className="lightbox" onClick={() => setLightboxImg(null)}>
-          <div className="lightbox__inner" onClick={e => e.stopPropagation()}>
-            <button className="lightbox__close" onClick={() => setLightboxImg(null)}>✕</button>
-            <img src={lightboxImg.image} alt={lightboxImg.title} className="lightbox__img" />
+      {lightbox && (
+        <div className="lightbox" onClick={() => setLightbox(null)}>
+          <div
+            className="lightbox__inner"
+            role="dialog"
+            aria-modal="true"
+            aria-label={lightbox.title}
+            onClick={e => e.stopPropagation()}
+          >
+            <button ref={closeRef} className="lightbox__close" aria-label="Close" onClick={() => setLightbox(null)}>✕</button>
+            <img src={lightbox.image} alt={lightbox.title} className="lightbox__img" />
             <div className="lightbox__info">
-              <span className="portfolio__category">{lightboxImg.category}</span>
-              <h3>{lightboxImg.title}</h3>
-              <p>{lightboxImg.desc}</p>
+              <span className="portfolio__category">{lightbox.category}</span>
+              <h3>{lightbox.title}</h3>
+              <p>{lightbox.desc}</p>
             </div>
           </div>
         </div>

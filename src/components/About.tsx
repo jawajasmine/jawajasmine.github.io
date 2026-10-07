@@ -1,32 +1,26 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
+import { useReveal } from '../hooks/useReveal'
 import './About.scss'
 
-const HIGHLIGHTS = [
-  { icon: '🎨', label: 'UX Design Lead', desc: '10+ yrs leading design systems & research' },
-  { icon: '🗺️', label: 'Product Strategy', desc: 'Roadmapping, OKRs & stakeholder alignment' },
-  { icon: '🚀', label: 'Agile Delivery', desc: 'Scrum/SAFe certified project delivery' },
-  { icon: '💡', label: 'Design Thinking', desc: 'Human-centered problem solving at scale' },
+// "Selected Impact" from the 2026 resume
+const IMPACT = [
+  { value: '50%', label: 'Increase in MES system adoption', context: 'Samsung SDS' },
+  { value: '40%', label: 'Design-system efficiency gain', context: 'Relevance Lab' },
+  { value: '35%', label: 'Fewer manual tasks', context: 'Samsung SDS' },
+  { value: '25%', label: 'Less development rework', context: 'Wipro' },
+  { value: '30%', label: 'Operational efficiency boost', context: 'Wipro' },
+  { value: '15–20%', label: 'Faster delivery timelines', context: 'Across roles' },
+]
+
+const TAGS = [
+  'UX Strategy', 'Design Systems', 'User Research', 'Information Architecture',
+  'Interaction Design', 'Usability Testing', 'Figma', 'React', 'Vue.js', 'Mentoring',
 ]
 
 export default function About() {
-  const sectionRef = useRef(null)
+  const sectionRef = useRef<HTMLElement>(null)
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible')
-          }
-        })
-      },
-      { threshold: 0.1 }
-    )
-
-    const elements = sectionRef.current?.querySelectorAll('.reveal')
-    elements?.forEach(el => observer.observe(el))
-    return () => observer.disconnect()
-  }, [])
+  useReveal(sectionRef)
 
   return (
     <section id="about" className="section about" ref={sectionRef}>
@@ -47,7 +41,7 @@ export default function About() {
               </div>
               {/* Years badge */}
               <div className="about__years-badge">
-                <span className="about__years-num">15</span>
+                <span className="about__years-num">17</span>
                 <span className="about__years-label">Years of<br/>Expertise</span>
               </div>
             </div>
@@ -56,39 +50,41 @@ export default function About() {
           {/* Text side */}
           <div className="about__text">
             <p className="about__lead reveal">
-              I'm a&nbsp;<strong>UX Designer turned Product Manager</strong>, with over 15 years
-              of experience crafting digital products that people love to use.
+              I'm a&nbsp;<strong>UX design leader</strong> with 17+ years of designing and shipping
+              enterprise, data-heavy and healthcare products for clients including Samsung SDS and
+              Aditya Birla Group.
             </p>
             <p className="about__body reveal">
-              My journey started in design — sketching wireframes, running user research, and
-              building design systems that scaled across enterprise products. Over the years,
-              I evolved into product leadership, taking end-to-end ownership of product
-              strategy, cross-functional teams, and go-to-market execution.
+              I lead UX strategy and execution end to end: research, information architecture,
+              interaction design, high-fidelity Figma prototyping, usability validation and design QA.
+              I've built design systems and standardized design workflows at two organizations, and I
+              measure UX by outcomes, like a 50% lift in system adoption on Samsung SDS's MES platform.
             </p>
             <p className="about__body reveal">
-              Today, as a <strong>Project Manager / Product Lead at Wipro</strong>, I bridge the
-              gap between design intuition and business outcomes — ensuring every product
-              decision is grounded in both user empathy and measurable impact.
+              I'm also a <strong>designer who builds</strong>. Nearly five years as a software engineer,
+              plus hands-on work in React, Vue.js and Java/Spring Boot, means my designs are shaped by
+              what engineering can actually ship. Today I'm a <strong>Team Lead at Wipro</strong>, where
+              I mentor designers and work directly with clients and stakeholders.
             </p>
 
             <div className="divider reveal" />
 
             <div className="about__tags reveal">
-              {['User Research', 'Design Systems', 'Figma', 'Agile / SAFe', 'Roadmapping',
-                'Stakeholder Management', 'A/B Testing', 'Design Thinking'].map(tag => (
+              {TAGS.map(tag => (
                 <span key={tag} className="about__tag">{tag}</span>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Highlights grid */}
+        {/* Selected impact */}
+        <h3 className="about__impact-title reveal">Selected Impact</h3>
         <div className="about__highlights">
-          {HIGHLIGHTS.map((item, i) => (
-            <div key={item.label} className={`glass-card about__highlight reveal`} style={{ animationDelay: `${i * 0.1}s` }}>
-              <span className="about__highlight-icon">{item.icon}</span>
+          {IMPACT.map(item => (
+            <div key={item.label} className="glass-card about__highlight reveal">
+              <span className="about__highlight-value gradient-text">{item.value}</span>
               <h4 className="about__highlight-label">{item.label}</h4>
-              <p className="about__highlight-desc">{item.desc}</p>
+              <p className="about__highlight-desc">{item.context}</p>
             </div>
           ))}
         </div>
