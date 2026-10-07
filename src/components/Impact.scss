@@ -1,0 +1,44 @@
+.impact__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.impact__card {
+  padding: 28px 24px;
+}
+
+.impact__value {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 44px;
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--color-primary);
+  margin-bottom: 10px;
+}
+
+.impact__label {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+
+.impact__context {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+@media (max-width: 900px) {
+  .impact__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .impact__grid { gap: 12px; }
+  .impact__card { padding: 20px 16px; }
+  .impact__value { font-size: 32px; }
+}

@@ -9,10 +9,10 @@ interface NavbarProps {
 
 const NAV_LINKS = [
   { id: 'home', label: 'Home' },
-  { id: 'about', label: 'About' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'portfolio', label: 'Portfolio' },
+  { id: 'portfolio', label: 'Work' },
+  { id: 'impact', label: 'Impact' },
   { id: 'experience', label: 'Experience' },
+  { id: 'about', label: 'About' },
   { id: 'contact', label: 'Contact' },
 ]
 

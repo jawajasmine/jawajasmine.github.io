@@ -1,21 +1,7 @@
 import { useRef } from 'react'
 import { useReveal } from '../hooks/useReveal'
+import Skills from './Skills'
 import './About.scss'
-
-// "Selected Impact" from the 2026 resume
-const IMPACT = [
-  { value: '50%', label: 'Increase in MES system adoption', context: 'Samsung SDS' },
-  { value: '40%', label: 'Design-system efficiency gain', context: 'Relevance Lab' },
-  { value: '35%', label: 'Fewer manual tasks', context: 'Samsung SDS' },
-  { value: '25%', label: 'Less development rework', context: 'Wipro' },
-  { value: '30%', label: 'Operational efficiency boost', context: 'Wipro' },
-  { value: '15–20%', label: 'Faster delivery timelines', context: 'Across roles' },
-]
-
-const TAGS = [
-  'UX Strategy', 'Design Systems', 'User Research', 'Information Architecture',
-  'Interaction Design', 'Usability Testing', 'Figma', 'React', 'Vue.js', 'Mentoring',
-]
 
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -26,8 +12,8 @@ export default function About() {
     <section id="about" className="section about" ref={sectionRef}>
       <div className="container">
         <div className="section-header reveal">
-          <span className="section-label">Who I Am</span>
-          <h2 className="section-title">Designing with <span>Purpose</span></h2>
+          <span className="section-label">About</span>
+          <h2 className="section-title">Designer who <span>builds</span></h2>
         </div>
 
         <div className="about__layout">
@@ -66,28 +52,10 @@ export default function About() {
               what engineering can actually ship. Today I'm a <strong>Team Lead at Wipro</strong>, where
               I mentor designers and work directly with clients and stakeholders.
             </p>
-
-            <div className="divider reveal" />
-
-            <div className="about__tags reveal">
-              {TAGS.map(tag => (
-                <span key={tag} className="about__tag">{tag}</span>
-              ))}
-            </div>
           </div>
         </div>
 
-        {/* Selected impact */}
-        <h3 className="about__impact-title reveal">Selected Impact</h3>
-        <div className="about__highlights">
-          {IMPACT.map(item => (
-            <div key={item.label} className="glass-card about__highlight reveal">
-              <span className="about__highlight-value gradient-text">{item.value}</span>
-              <h4 className="about__highlight-label">{item.label}</h4>
-              <p className="about__highlight-desc">{item.context}</p>
-            </div>
-          ))}
-        </div>
+        <Skills />
       </div>
     </section>
   )
