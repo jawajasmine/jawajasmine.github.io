@@ -49,7 +49,7 @@ const EXPERIENCES: Role[] = [
         name: 'Aditya Birla Group — Tinting Cloud Service',
         period: 'Jan 2024 – Dec 2024',
         highlights: [
-          'Designed wireframes and high-fidelity Figma prototypes from client requirements, then built the front end in React, HTML and CSS, taking features from concept to deployment',
+          'Designed wireframes and high-fidelity Figma prototypes from client requirements and took features from concept to deployment',
         ],
       },
       {
@@ -59,7 +59,7 @@ const EXPERIENCES: Role[] = [
         highlights: [
           'Drove a full UX/UI transformation of the MES web platform, simplifying complex manufacturing workflows to reduce manual tasks by 35% and cut project timelines by 20%',
           'Used usability testing and heatmap analysis to iterate on the design, driving a 50% increase in system adoption',
-          "Studied the client's existing system to ground the redesign in real workflows; built UI hands-on in Vue.js against Java/Spring Boot services",
+          "Studied the client's existing system to ground the redesign in real workflows",
         ],
       },
       {

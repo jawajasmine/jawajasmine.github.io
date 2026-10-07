@@ -13,7 +13,7 @@ export default function About() {
       <div className="container">
         <div className="section-header reveal">
           <span className="section-label">About</span>
-          <h2 className="section-title">Designer who <span>builds</span></h2>
+          <h2 className="section-title">Research to <span>release</span></h2>
         </div>
 
         <div className="about__layout">
@@ -47,10 +47,9 @@ export default function About() {
               measure UX by outcomes, like a 50% lift in system adoption on Samsung SDS's MES platform.
             </p>
             <p className="about__body reveal">
-              I'm also a <strong>designer who builds</strong>. Nearly five years as a software engineer,
-              plus hands-on work in React, Vue.js and Java/Spring Boot, means my designs are shaped by
-              what engineering can actually ship. Today I'm a <strong>Team Lead at Wipro</strong>, where
-              I mentor designers and work directly with clients and stakeholders.
+              An engineering background means I design with feasibility in mind and work closely
+              with developers through handoff and design QA. Today I'm a <strong>Team Lead at
+              Wipro</strong>, where I mentor designers and work directly with clients and stakeholders.
             </p>
           </div>
         </div>

@@ -33,8 +33,8 @@ export default function Hero() {
 
         <p className="hero__tagline">
           17+ years designing data-heavy and healthcare products for clients like Samsung SDS and
-          Aditya Birla Group. Team Lead at <span className="hero__company">Wipro</span>, and a
-          designer who builds.
+          Aditya Birla Group. Team Lead at <span className="hero__company">Wipro</span>, leading UX
+          from research to release.
         </p>
 
         <dl className="hero__stats">

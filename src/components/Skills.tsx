@@ -22,7 +22,6 @@ const EXPERTISE = [
 
 const TOOLS = [
   { group: 'Design', items: ['Figma', 'Adobe XD', 'Sketch', 'InVision', 'Photoshop', 'Illustrator'] },
-  { group: 'Engineering', items: ['React', 'Vue.js', 'JavaScript', 'jQuery', 'HTML', 'CSS', 'Java', 'Spring Boot', 'REST APIs', 'SQL'] },
 ]
 
 // Rendered inside the About section as a compact reference block
